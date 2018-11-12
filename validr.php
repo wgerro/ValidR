@@ -6,7 +6,6 @@
  *
  */
 
-
 function validIsRequired($value) {
     return (!empty($value) && mb_strlen($value) > 0);
 }
@@ -50,8 +49,22 @@ function validIsNull($value) {
     return is_null($value);
 }
 
-function validIsUniqueTable($connection, $table, $column, $id, $value) {
-    $select = "SELECT * FROM {$table} WHERE id={$id} AND {$column}='{$value}'";
+function validIsUniqueTable($type, $connection, $table, $column, $id, $value) {
+    $select = "SELECT COUNT(*) as results FROM {$table} WHERE id=? AND {$column}=?";
+    switch($type) {
+        case 'mysqli' :
+            $count = $connection->prepare($select);
+            $count->bind_param('is',$id, $value);
+            $count->execute();
+            $results = $count->get_result();
+            $results = $results->fetch_assoc()['results'];
+        break;
+
+        case 'pdo' :
+
+        break;
+    }
+    return $results > 0 ? false : true;
 }
 
 /*
