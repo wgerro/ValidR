@@ -8,61 +8,61 @@
 
 
 function validIsRequired($value) {
-    return (!empty($value) && mb_strlen($value) > 0) ?? false;
+    return (!empty($value) && mb_strlen($value) > 0);
 }
 
 function validIsNumber($value) {
-    return is_numeric($value) && filter_var($value, FILTER_VALIDATE_INT) ?? false;
+    return is_numeric($value) && filter_var($value, FILTER_VALIDATE_INT);
 }
 
 function validIsString($value) {
-    return (is_string($value) && preg_match('/^[A-Za-z0-9_-]*$/', $value)) ?? false;
+    return (is_string($value) && preg_match('/^[A-Za-z0-9_-]*$/', $value));
 }
 
 function validIsEmail($value) {
     $re = '/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/i';
-    return (filter_var($value, FILTER_VALIDATE_EMAIL) && preg_match($re, $value)) ?? false;
+    return (filter_var($value, FILTER_VALIDATE_EMAIL) && preg_match($re, $value));
 }
 
 function validIsUrl($value) {
     $re = '/^(http|https):\\/\\/[a-z0-9_]+([\\-\\.]{1}[a-z_0-9]+)*\\.[_a-z]{2,5}'.'((:[0-9]{1,5})?\\/.*)?$/i';
-    return (filter_var($value, FILTER_VALIDATE_URL) && preg_match($re, $value)) ?? false;
+    return (filter_var($value, FILTER_VALIDATE_URL) && preg_match($re, $value));
 }
 
 function validIsIP($value) {
     $re = '/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\z/';
-    return (filter_var($value, FILTER_VALIDATE_IP) && preg_match($re, $value)) ?? false;
+    return (filter_var($value, FILTER_VALIDATE_IP) && preg_match($re, $value));
 }
 
 function validIsBoolean($value) {
-    return (is_bool($value) && filter_var($value, FILTER_VALIDATE_BOOLEAN)) ?? false;
+    return (is_bool($value) && filter_var($value, FILTER_VALIDATE_BOOLEAN));
 }
 
 function validIsFloat($value) {
-    return (is_float($value) && filter_var($value, FILTER_VALIDATE_FLOAT)) ?? false;
+    return (is_float($value) && filter_var($value, FILTER_VALIDATE_FLOAT));
 }
 
+function validCustom($value, $regex) {
+    return preg_match($regex, $value);
+}
+
+function validIsNull($value) {
+    return is_null($value);
+}
+
+function validIsUniqueTable($connection, $table, $column, $id, $value) {
+    $select = "SELECT * FROM {$table} WHERE id={$id} AND {$column}='{$value}'";
+}
+
+/*
+* FIX
+*/
 function validIsPhone($value) {
-
+    return preg_match("/^[0-9]{3}-[0-9]{4}-[0-9]{4}$/", $value) ?? false;
 }
-
-
-
-//dziala
-function validCustom($regex, $value) {
-    return preg_match($regex, $value) ?? false;
-}
-
-
 
 /*
  * TESTING
  */
 
-$string = "";
-$number = 123323;
-$email = "gerro80gmail.com";
-$url = 'krystianoziembala.pl';
-$ip = "111.12.222a111";
-$bool = true;
-var_dump(validIsboolean($ip));
+
