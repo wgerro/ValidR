@@ -1,4 +1,4 @@
-function decodeHtml(unsafe)
+function unescapeHtml(unsafe)
 {
     var map =
     {
@@ -11,7 +11,18 @@ function decodeHtml(unsafe)
     return unsafe.replace(/&amp;|&lt;|&gt;|&quot;|&#039;/g, function(m) {return map[m];});
 }
 
-
+function escapeHtml(unsafe)
+{
+    var map =
+    {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#039;'
+    };
+    return unsafe.replace(/[&<>"']/g, function(m) {return map[m];});
+}
 
 
 
